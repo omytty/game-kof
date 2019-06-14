@@ -44,7 +44,12 @@
             = this.elementRight.ontouchend
             = this.elementDown.ontouchend
             = this.elementLeft.ontouchend
-            = this._handleDirection(constants.ACTION_STAY);
+            = (function() {
+                var callbackDirection = this._handleDirection(constants.ACTION_STAY);
+                var callbackType = this._handleImageType(constants.IMAGE_TYPE_STAY);
+                callbackDirection();
+                callbackType();
+            }).bind(this);
 
         this.elementA.ontouchstart = this._handleImageType(constants.IMAGE_TYPE_A);
         this.elementB.ontouchstart = this._handleImageType(constants.IMAGE_TYPE_B);

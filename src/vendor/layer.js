@@ -22,8 +22,8 @@
         this.context.clearRect(x, y, w, h);
     };
 
-    layer.prototype.drawImage = function(image, x, y) {
-        this.context.drawImage(image, x, y);
+    layer.prototype.drawImage = function(image, x, y, width, height) {
+        this.context.drawImage(image, x, y, width, height);
     };
 
     window.Layer = layer;
