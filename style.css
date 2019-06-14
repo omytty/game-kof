@@ -12,12 +12,6 @@ body, .app {
     height: 100%;
 }
 
-.app {
-    background: url(./images/helpers/bg.jpg);
-    background-repeat:no-repeat;
-    background-size:100% 100%;
-}
-
 #controller {
     position: fixed;
     bottom: 10px;
@@ -143,6 +137,8 @@ body, .app {
     margin: 0 auto;
     width: 80%;
     height: 100%;
+    border-radius: 6px;
+    border: 1px solid rgb(119, 189, 255);
 }
 
 .info .loader .content .fill {
@@ -151,6 +147,9 @@ body, .app {
     border-radius: 6px;
     background: rgb(62, 143, 219);
     box-shadow: 0 0 16px rgb(119, 189, 255);
+    line-height: 30px;
+    text-align: center;
+    font-size: .6rem;
 }
 
 .info .confirm {

@@ -272,7 +272,6 @@ var elementPopup = document.getElementById('popup');
 var elementCanvases = document.getElementById('canvases');
 
 elementConfirm.onclick = function(event) {
-    requestFullScreen();
     elementInfo.style.display = 'none';
     elementFighters.style.display = 'block';
 };
@@ -314,34 +313,36 @@ function initialGame(localName, localCount, images) {
     app.start();
 }
 
+function initialSource() {
+    var clientWidth = document.body.clientWidth;
+    var clientHeight = document.body.clientHeight;
+    var _height = clientHeight;
+    var _width = clientHeight / 3 * 5;
+    if (clientWidth < _width) {
+        _height = clientWidth / 5 * 3;
+        _width = clientWidth;
+    }
+    var _fixed = (clientWidth - _width) / 2;
+    elementApp.style.left = _fixed + 'px';
+    window.app = new App(elementApp, _width, _height);
+
+    window.localLayer = new Layer(elementApp, app.width, app.height);
+    window.remoteLayer = new Layer(elementApp, app.width, app.height);
+}
+
 elementActionLoad.onclick = function(event) {
-    //  init app
-    (function() {
-        var clientWidth = document.body.clientWidth;
-        var clientHeight = document.body.clientHeight;
-        var _height = clientHeight;
-        var _width = clientHeight / 3 * 5;
-        if (clientWidth < _width) {
-            _height = clientWidth / 5 * 3;
-            _width = clientWidth;
-        }
-        var _fixed = (clientWidth - _width) / 2;
-        elementApp.style.left = _fixed + 'px';
-        window.app = new App(elementApp, _width, _height);
-
-        window.localLayer = new Layer(elementApp, app.width, app.height);
-        window.remoteLayer = new Layer(elementApp, app.width, app.height);
-    })();
-
     elementFlowNotice.style.display = 'none';
     elementLoader.style.display = 'block';
-    var loader = app.loadImages(neededImages);
+    requestFullScreen();
+    setTimeout(initialSource, 1000);
 
+    var loader = new ImageLoader(neededImages);
     (function() {
         var length = Object.keys(neededImages).length;
         var piece = 100 / length;
         var count = 0;
         loader.onEachLoaded(function(image, key) {
+            elementLoaderFill.innerText = key;
             count += piece;
             elementLoaderFill.style.width = count + '%';
             if (Math.ceil(count) >= 100) {
@@ -363,7 +364,7 @@ elementActionLoad.onclick = function(event) {
             })();
         }
     });
-}
+};
 
 </script>
 </html>

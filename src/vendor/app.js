@@ -108,6 +108,9 @@
     app.prototype._buildAppElements = function(element) {
         element.style.width = this.width + 'px';
         element.style.height = this.height + 'px';
+        elementApp.style.background = 'url(./images/helpers/bg.jpg)';
+        elementApp.style.backgroundSize = '100% 100%';
+        elementApp.style.backgroundRepeat = 'no-repeat';
         element.ontouchstart
             = element.ontouchend
             = element.ontouchmove
