@@ -12,6 +12,10 @@ body, .app {
     height: 100%;
 }
 
+.app {
+    display: none;
+}
+
 #controller {
     position: fixed;
     bottom: 10px;
@@ -52,7 +56,7 @@ body, .app {
 }
 
 .helpers {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -108,6 +112,10 @@ body, .app {
     font-weight: bold;
 }
 
+.info {
+    display: none;
+}
+
 .info, .notice, .fighters {
     position: fixed;
     left: 0;
@@ -118,7 +126,7 @@ body, .app {
     background: rgba(0,0,0,.9);
 }
 
-.info .title, .info .intro {
+.info .title, .info .intro, .fighters .title {
     color: white;
     text-decoration: underline;
     text-align: center;
@@ -196,11 +204,9 @@ body, .app {
     padding-top: 2rem;
     padding-bottom: 2rem;
 }
-
 .fighters {
     display: none;
 }
-
 .fighters .fighter {
     float: left;
     width: 50px;
@@ -211,8 +217,8 @@ body, .app {
     width: 50px;
     height: 50px;
 }
-.fighters h1 {
-    color: white;
+.fighters h3 {
+    color: rgb(172, 238, 255);
     text-align: center;
 }
 

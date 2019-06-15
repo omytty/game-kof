@@ -18,7 +18,7 @@ window.constants = {
     ACTION_DOWN: 14,
     LAND_HEIGHT: 40,
     bili: {
-        COUNT_stay: 9,
+        COUNT_stay: 5,
         COUNT_walk: 5,
         COUNT_up: 3,
         COUNT_down: 2,
@@ -37,7 +37,8 @@ window.constants = {
         BLOOD_A: 10,
         BLOOD_B: 10,
         BLOOD_C: 4,
-        BLOOD_D: 16
+        BLOOD_D: 16,
+        FLOW_COUNT: 221
     },
     chunli: {
         COUNT_stay: 8,
@@ -59,6 +60,7 @@ window.constants = {
         BLOOD_A: 15,
         BLOOD_B: 7,
         BLOOD_C: 10,
-        BLOOD_D: 25
+        BLOOD_D: 25,
+        FLOW_COUNT: 360
     }
 };

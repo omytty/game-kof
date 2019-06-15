@@ -120,9 +120,9 @@
     };
 
     app.prototype._setState = function(key, value) {
-        console.log('prevState', this.state);
+        // console.log('prevState', this.state);
         this.state[key] = value;
-        console.log('currentState', this.state);
+        // console.log('currentState', this.state);
     };
 
     window.App = app;

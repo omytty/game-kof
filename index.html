@@ -34,15 +34,26 @@
         </div>
     </div>
 
-    <div class="info" id="info">
+    <div class="info" id="welcome" style="display: block">
         <h1 class="title">THE KING OF FIGHTERS</h1>
         <div class="intro">
             <p>作者：omytty</p>
             <p>时间：2019-06-13</p>
         </div>
+        <div class="confirm" style="display: block;">
+            <button class="fight" id="join" type="button">进入游戏</button>
+        </div>
+    </div>
+
+    <div class="info" id="info">
+        <h1 class="title">THE KING OF FIGHTERS</h1>
+        <div class="intro">
+            <p>角色已选定</p>
+            <p>HAVE FUN!</p>
+        </div>
 
         <div class="flow-notice" id="flow-notice">
-            <p>游戏加载预计花费 520KB 流量</p>
+            <p>本次加载预计花费 <span id="flow-count"></span> 流量，是否加载？</p>
             <button class="action-load" id="action-load" type="button">加载</button>
         </div>
 
@@ -53,14 +64,15 @@
         </div>
 
         <div class="confirm" id="confirm">
-            <button class="fight" type="button">FIGHT !</button>
+            <button class="fight" id="fight" type="button">FIGHT !</button>
         </div>
     </div>
 
     <div class="fighters" id="fighters">
-        <h1>选择角色</h1>
-        <div class="fighter" id="bili" reload="90"><img src="./images/bili/head-0.png" alt="Bili" /></div>
-        <div class="fighter" id="chunli" reload="70"><img src="./images/chunli/head-0.png" alt="Chunli" /></div>
+        <h1 class="title">THE KING OF FIGHTERS</h1>
+        <h3>选择角色</h3>
+        <span class="fighter" id="bili" reload="90"><img src="./images/bili/head-0.png" alt="Bili" /></span>
+        <span class="fighter" id="chunli" reload="70"><img src="./images/chunli/head-0.png" alt="Chunli" /></span>
     </div>
 
     <div class="popup" id="popup">
@@ -72,9 +84,7 @@
     <!-- APPLICATION -->
 
     <article class="app" id="app">
-        <div id="canvases">
-            <!-- Prepare canvas layer -->
-        </div>
+        <!-- Prepare canvas layer -->
         <div class="blood" id="blood">
             <div class="content">
                 <div class="fill" id="blood-fill-remote"></div>
@@ -102,37 +112,20 @@
 </body>
 
 <script>
-var screenNotice = function() {
-    var elementNotice = document.getElementById('notice');
-    if (window.orientation == 0 || window.orientation == 180) {
-        elementNotice.style.display = 'block';
-    } else {
-        elementNotice.style.display = 'none';
-    }
-};
-window.onresize = screenNotice;
-screenNotice();
-</script>
+var images_bili = {
+    bili_walk_0: './images/bili/1-0.png',
+    bili_walk_1: './images/bili/1-1.png',
+    bili_walk_2: './images/bili/1-2.png',
+    bili_walk_3: './images/bili/1-3.png',
+    bili_walk_4: './images/bili/1-4.png',
+    bili_walk_5: './images/bili/1-5.png',
 
-<script>
-var neededImages = {
-    bili_walk_0: './images/bili/9-0.png',
-    bili_walk_1: './images/bili/9-1.png',
-    bili_walk_2: './images/bili/9-2.png',
-    bili_walk_3: './images/bili/9-3.png',
-    bili_walk_4: './images/bili/9-4.png',
-    bili_walk_5: './images/bili/9-5.png',
-
-    bili_stay_0: './images/bili/8-0.png',
-    bili_stay_1: './images/bili/8-1.png',
-    bili_stay_2: './images/bili/8-2.png',
-    bili_stay_3: './images/bili/8-3.png',
-    bili_stay_4: './images/bili/8-4.png',
-    bili_stay_5: './images/bili/8-5.png',
-    bili_stay_6: './images/bili/8-6.png',
-    bili_stay_7: './images/bili/8-7.png',
-    bili_stay_8: './images/bili/8-8.png',
-    bili_stay_9: './images/bili/8-9.png',
+    bili_stay_0: './images/bili/1-0.png',
+    bili_stay_1: './images/bili/1-1.png',
+    bili_stay_2: './images/bili/1-2.png',
+    bili_stay_3: './images/bili/1-3.png',
+    bili_stay_4: './images/bili/1-4.png',
+    bili_stay_5: './images/bili/1-5.png',
 
     bili_up_0: './images/bili/6-0.png',
     bili_up_1: './images/bili/6-1.png',
@@ -170,6 +163,8 @@ var neededImages = {
     bili_D_6: './images/bili/5-6.png',
     bili_D_7: './images/bili/5-7.png',
     bili_D_8: './images/bili/5-8.png',
+};
+var images_chunli = {
 
     chunli_walk_0: './images/chunli/2-0.png',
     chunli_walk_1: './images/chunli/2-1.png',
@@ -287,22 +282,58 @@ var elementC = document.getElementById('skill-c');
 var elementD = document.getElementById('skill-d');
 var elementsFighter = document.getElementsByClassName('fighter');
 var elementFighters = document.getElementById('fighters');
+var elementFight = document.getElementById('fight');
 var elementBloodFillRemote = document.getElementById('blood-fill-remote');
 var elementBloodFillLocal = document.getElementById('blood-fill-local');
 var elementPopup = document.getElementById('popup');
-var elementCanvases = document.getElementById('canvases');
+var elementJoin = document.getElementById('join');
+var elementWelcome = document.getElementById('welcome');
+var elementFlowCount = document.getElementById('flow-count');
 
-elementConfirm.onclick = function(event) {
-    elementInfo.style.display = 'none';
-    elementFighters.style.display = 'block';
-};
+</script>
 
+<script>
+function resizeFighters() {
+    var clientWidth = document.body.clientWidth;
+    var clientHeight = document.body.clientHeight;
+    var _width = clientHeight / 3 * 5;
+    if (clientWidth < _width) {
+        _width = clientWidth;
+    }
+    var _fixed = (clientWidth - _width) / 2;
+    elementFighters.style.width = _width + 'px';
+    elementFighters.style.marginLeft = _fixed + 'px';
+}
 elementPopup.onclick = function(event) {
     elementPopup.style.display = 'none';
     elementFighters.style.display = 'block';
+    elementApp.style.display = 'none';
 };
 
+elementJoin.onclick = function() {
+    elementWelcome.style.display = 'none';
+    elementFighters.style.display = 'block';
+};
+// elementApp
+function initialSource() {
+    var clientWidth = document.body.clientWidth;
+    var clientHeight = document.body.clientHeight;
+    var _height = clientHeight;
+    var _width = clientHeight / 3 * 5;
+    if (clientWidth < _width) {
+        _height = clientWidth / 5 * 3;
+        _width = clientWidth;
+    }
+    var _fixed = (clientWidth - _width) / 2;
+    elementApp.style.left = _fixed + 'px';
+    window.app = new App(elementApp, _width, _height);
+
+    window.localLayer = new Layer(elementApp, app.width, app.height);
+    window.remoteLayer = new Layer(elementApp, app.width, app.height);
+}
+
 function initialGame(localName, localCount, images) {
+    elementInfo.style.display = 'none';
     elementPopup.style.display = 'none';
     elementBloodFillRemote.style.width = '100%';
     elementBloodFillLocal.style.width = '100%';
@@ -334,58 +365,89 @@ function initialGame(localName, localCount, images) {
     app.start();
 }
 
-function initialSource() {
-    var clientWidth = document.body.clientWidth;
-    var clientHeight = document.body.clientHeight;
-    var _height = clientHeight;
-    var _width = clientHeight / 3 * 5;
-    if (clientWidth < _width) {
-        _height = clientWidth / 5 * 3;
-        _width = clientWidth;
+// elementFighters
+(function() {
+    resizeFighters();
+    // elementFighters.style.display = 'block';
+    for (var i = 0; i < elementsFighter.length; i++) {
+        (function() {
+            var fighter = elementsFighter[i];
+            fighter.onclick = function(event) {
+                confirmLoadGame(fighter, 'bili');
+            };
+        })();
     }
-    var _fixed = (clientWidth - _width) / 2;
-    elementApp.style.left = _fixed + 'px';
-    window.app = new App(elementApp, _width, _height);
+})();
 
-    window.localLayer = new Layer(elementApp, app.width, app.height);
-    window.remoteLayer = new Layer(elementApp, app.width, app.height);
+// elementFlowNotice
+function confirmLoadGame(localFighter, remoteName) {
+    var localName = localFighter.getAttribute('id');
+    var localFlow = constants[localName]['FLOW_COUNT'];
+    var remoteFlow = constants[remoteName]['FLOW_COUNT'];
+    if (localName == remoteName) {
+        remoteFlow = 0;
+    }
+    elementFlowCount.innerText = localFlow + remoteFlow + 'KB';
+
+    elementFighters.style.display = 'none';
+    elementInfo.style.display = 'block';
+    elementConfirm.style.display = 'none';
+    elementFlowNotice.style.display = 'block';
+    requestFullScreen();
+    // 确认加载
+    elementActionLoad.onclick = function() {
+        elementFlowNotice.style.display = 'none';
+        elementLoader.style.display = 'block';
+        var neededImages = {};
+        neededImages = images_bili;
+        var localImage = window['images_' + localName];
+        for (var key in localImage) {
+            neededImages[key] = localImage[key];
+        }
+        var loader = new ImageLoader(neededImages);
+        (function() {
+            var length = Object.keys(neededImages).length;
+            var piece = 100 / length;
+            var count = 0;
+            loader.onEachLoaded(function(image, key) {
+                elementLoaderFill.innerText = key;
+                count += piece;
+                elementLoaderFill.style.width = count + '%';
+                if (Math.ceil(count) >= 100) {
+                    elementLoader.style.display = 'none';
+                    elementConfirm.style.display = 'block';
+                }
+            });
+        })();
+        var loadedPromise = loader.load();
+        elementFight.onclick = onStartFight(loadedPromise, localFighter);
+    };
 }
 
-elementActionLoad.onclick = function(event) {
-    elementFlowNotice.style.display = 'none';
-    elementLoader.style.display = 'block';
-    requestFullScreen();
-    setTimeout(initialSource, 1000);
-
-    var loader = new ImageLoader(neededImages);
-    (function() {
-        var length = Object.keys(neededImages).length;
-        var piece = 100 / length;
-        var count = 0;
-        loader.onEachLoaded(function(image, key) {
-            elementLoaderFill.innerText = key;
-            count += piece;
-            elementLoaderFill.style.width = count + '%';
-            if (Math.ceil(count) >= 100) {
-                elementLoader.style.display = 'none';
-                elementConfirm.style.display = 'block';
-            }
+function onStartFight(loadedPromise, fighter) {
+    initialSource();
+    return function() {
+        loadedPromise.then(function(_images) {
+            elementApp.style.display = 'block';
+            var images = pixelReverseArray(_images);
+            var reloadCount = fighter.getAttribute('reload');
+            initialGame(fighter.id, reloadCount, images);
         });
-    })();
+    };
+}
+</script>
 
-    loader.load().then(function(_images) {
-        var images = pixelReverseArray(_images);
-        for (var i = 0; i < elementsFighter.length; i++) {
-            (function() {
-                var fighter = elementsFighter[i];
-                fighter.onclick = function(event) {
-                    var reloadCount = fighter.getAttribute('reload');
-                    initialGame(fighter.id, reloadCount, images);
-                };
-            })();
-        }
-    });
+<script>
+var screenNotice = function() {
+    var elementNotice = document.getElementById('notice');
+    if (window.orientation == 0 || window.orientation == 180) {
+        elementNotice.style.display = 'block';
+    } else {
+        resizeFighters();
+        elementNotice.style.display = 'none';
+    }
 };
-
+window.onresize = screenNotice;
+screenNotice();
 </script>
 </html>
